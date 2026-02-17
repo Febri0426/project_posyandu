@@ -15,139 +15,139 @@ Route::get('/user', [UserController::class, 'index']);
 */
 
 
-
+//route dasar
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('foo', function () {
-    return 'Hello World';
+//example route 
+Route::get('foo', function () { 
+    return 'Hello World'; 
 });
-
-Route::get('user/{id}', function ($id) {
-    return 'User ' . $id;
+//route dengan parameter
+Route::get('user/{id}', function ($id) { 
+    return 'User ' . $id; //menampilkan id yang dikirim melalui url
 });
-
+//route dengan beberapa parameter
 Route::get('posts/{post}/comments/{comment}', function ($postId, $commentId) {
     return 'Post ke: ' . $postId . ', dengan Komentar ke: ' . $commentId;
 });
 
 //prosedur kerja acara 3
 Route::get('/halo', function () {  //route get
-    return "Ini route GET";
+    return "Ini route GET"; //route get untuk menampilkan form
 });
-
+//HTTP method 
 Route::post('/kirim', function () { //route post
-    return "Data berhasil dikirim dengan POST";
+    return "Data berhasil dikirim dengan POST"; //route post untuk memproses data yang dikirim dari form
 });
-Route::get('/form', function () {
+Route::get('/form', function () { 
     return '
         <form method="POST" action="/kirim">
-            '.csrf_field().'
+            ' . csrf_field() . ' //untuk keamanan form
             <button type="submit">Kirim</button>
-        </form>
+        </form> //menampilkan form untuk mengirim data dengan method POST
     ';
 });
-
-Route::put('/update', function () { //route put
-    return "Data berhasil diupdate";
+//route put
+Route::put('/update', function () {
+    return "Data berhasil diupdate"; //route put untuk mengupdate data yang sudah ada
 });
 
 Route::get('/form-update', function () {
     return '
         <form method="POST" action="/update">
-            '.csrf_field().'
+            ' . csrf_field() . '
             <input type="hidden" name="_method" value="PUT">
             <button type="submit">Update</button>
         </form>
     ';
 });
-
-Route::delete('/hapus', function () { //route delete
+//route delete
+Route::delete('/hapus', function () {
     return "Data berhasil dihapus";
 });
 Route::get('/form-hapus', function () {
     return '
         <form method="POST" action="/hapus">
-            '.csrf_field().'
+            ' . csrf_field() . '
             <input type="hidden" name="_method" value="DELETE">
             <button type="submit">Hapus Data</button>
         </form>
     ';
 });
-
-Route::patch('/edit', function () { //route patch
-    return "Data berhasil diedit";
+//route patch
+Route::patch('/edit', function () {
+    return "Data berhasil diedit"; //route patch untuk mengedit sebagian data yang sudah ada
 });
 Route::get('/form-edit', function () {
     return '
         <form method="POST" action="/edit">
-            '.csrf_field().'
+            ' . csrf_field() . '
             <input type="hidden" name="_method" value="PATCH">
             <button type="submit">Edit Data</button>
         </form>
     ';
 });
-
-Route::match(['get', 'post'], '/multi', function () { //route match
-    return "Bisa GET dan POST";
+//route match 
+Route::match(['get', 'post'], '/multi', function () {
+    return "Bisa GET dan POST"; //route match untuk menerima beberapa method sekaligus
 });
 Route::get('/form-multi', function () {
     return '
         <form method="POST" action="/multi">
-            '.csrf_field().'
+            ' . csrf_field() . '
             <button type="submit">Kirim POST</button>
         </form>
     ';
 });
-
-Route::any('/semua', function () { //route any
-    return "Semua method bisa akses";
+//route any
+Route::any('/semua', function () {
+    return "Semua method bisa akses"; //route any untuk menerima semua method HTTP
 });
 Route::get('/form-semua', function () {
     return '
         <form method="POST" action="/semua"> 
-            '.csrf_field().' 
+            ' . csrf_field() . ' 
             <button type="submit">Kirim</button>
         </form>
     ';
 });
 
 Route::get('/there', function () {
-    return "Halaman THERE";
+    return "Halaman THERE"; //route tujuan untuk redirect
 });
-
+//route redirect
 Route::redirect('/here', '/there');
 
 Route::redirect('/lama', '/there', 301);
 
-Route::permanentRedirect('/old', '/there');
+Route::permanentRedirect('/old', '/there'); //direct permanen
 
-//route view
+//route view, menampilkan view tanpa controler
 Route::view('/welcome', 'welcome');
-
+//route view dengan data
 Route::view('/welcome2', 'welcome', [
     'name' => 'Febri'
 ]);
-//parameter opsional
+//route dengan parameter opsional
 Route::get('/user/{name?}', function ($name = null) {
     return "Nama: " . $name;
 });
 
-//regular expression
+//regular expression fungsinya untuk menetapkan aturan pada parameter route, sehingga hanya menerima nilai yang sesuai dengan pola yang ditentukan
 Route::get('/user/{name}', function ($name) {
     return "Nama user: " . $name;
-})->where('name', '[A-Za-z]+');
+})->where('name', '[A-Za-z]+'); //hanya menerima huruf
 Route::get('/user/{id}', function ($id) {
     return "ID User: " . $id;
-})->where('id', '[0-9]+');
+})->where('id', '[0-9]+'); //hanya menerima angka
 
-//global constraints 
-Route::get('/user/{id}', function ($id) {
-    return "User ID: " . $id;
+//global constraints fungsinya untuk menetapkan aturan global pada parameter tertentu, sehingga tidak perlu menulis aturan yang sama berulang kali pada setiap route yang menggunakan parameter tersebut
+Route::get('/user/{id}', function ($id) { 
+    return "User ID: " . $id; 
 });
 
-//Encoded Forward Slashes
+//Encoded Forward Slashes fungsinya untuk mengizinkan karakter garis miring menjadi bagian dari parameter route dengan cara mengatur pola regular expression agar tidak diperlakukan sebagai pemisah URL
 Route::get('search/{search}', function ($search) {
     return $search;
 })->where('search', '.*');
@@ -158,7 +158,7 @@ Route::get('/profile', function () {
     return 'Halaman Profile';
 })->name('profile');
 Route::get('/test-url', function () {
-    return route('profile'); 
+    return route('profile');
 });
 
 //Memeriksa Rute Saat Ini
@@ -167,7 +167,7 @@ Route::get('/profile', function () {
 })->name('profile')->middleware('check.profile');
 
 //Middleware Group di Route
-Route::middleware(['first', 'second'])->group(function () {
+Route::middleware(['first', 'second'])->group(function () { //middleware berfung untuk memproses request sebelum mencapai route, bisa digunakan untuk autentikasi, logging, dll
 
     Route::get('/', function () {
         return 'Halaman Home';
@@ -179,7 +179,7 @@ Route::middleware(['first', 'second'])->group(function () {
 
 });
 
-//Route Namespace Grouping
+//Route Namespace Grouping 
 use App\Http\Controllers\Admin\DashboardController;
 use Illuminate\Support\Facades\Route;
 
