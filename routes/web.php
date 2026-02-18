@@ -167,7 +167,8 @@ Route::get('/profile', function () {
 })->name('profile')->middleware('check.profile');
 
 //Middleware Group di Route
-Route::middleware(['first', 'second'])->group(function () { //middleware berfung untuk memproses request sebelum mencapai route, bisa digunakan untuk autentikasi, logging, dll
+//middleware berfungsi untuk memproses request sebelum mencapai route, bisa digunakan untuk autentikasi, logging, dll
+Route::middleware(['first', 'second'])->group(function () { 
 
     Route::get('/', function () {
         return 'Halaman Home';
@@ -185,14 +186,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/admin/dashboard', [DashboardController::class, 'index']);
 
-//Subdomain Routing 
+//Subdomain Routing
 Route::domain('{account}.myapp.test')->group(function () {
     Route::get('/user/{id}', function ($account, $id) {
         return "Subdomain: $account | User ID: $id";
     });
 });
 
-//Route Prefixes
+//Route Prefixes fungsinya untuk menambahkan prefix pada URL route, sehingga semua route dalam grup tersebut akan memiliki prefix yang sama, memudahkan pengelompokan dan manajemen route
 Route::prefix('admin')->group(function () {
 
     Route::get('/users', function () {
